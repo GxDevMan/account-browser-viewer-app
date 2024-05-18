@@ -30,8 +30,9 @@ async function selectAccounts(buffer) {
     db.close();
     return jsonData;
   } catch (error) {
-    console.error("Error selecting accounts:", error);
-    throw error;
+    console.log("Accounts not selected")
+    // console.error("Error selecting accounts:", error);
+    // throw error;
   }
 }
 

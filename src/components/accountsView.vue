@@ -1,43 +1,50 @@
-    <template>
-        <div class="dark-mode">
-        <div class="container">
-            <div class="search-container">
-            <input v-model="searchTerm" type="text" class="search-input" placeholder="Search...">
-            <div class="button-container">
-                <button @click="search" class="btn">Search</button>
-                <button @click="refresh" class="btn">Refresh</button>
-                <button @click="clearSearch" class="btn">Clear Search</button>
-            </div>
-            </div>
-            <div class="table-container">
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th>User Platform</th>
-                    <th>User Name</th>
-                    <th>User Email</th>
-                    <th>User Password</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(user, index) in filteredUsers" :key="index">
-                    <td>{{ user.userPlatform }}</td>
-                    <td><button class="btn" @click="copyText(user.userName)">Copy</button> {{ readableText(user.userName) }}</td>
-                    <td><button class="btn" @click="copyText(user.userEmail)">Copy</button> {{ readableText(user.userEmail) }}</td>
-                    <td><button class="btn" @click="copyText(user.userPassword)">Copy</button> {{ readableText(user.userPassword) }}</td>
-
-                </tr>
-                </tbody>
-            </table>
-            </div>
+<template>
+  <div class="dark-mode">
+    <div class="container">
+      <div class="search-container">
+        <input v-model="searchTerm" type="text" class="search-input" placeholder="Search...">
+        <div class="button-container">
+          <button @click="goBacktoPage" class="btn">Go Back</button>
+          <button @click="clearSearch" class="btn">Clear Search</button>
         </div>
-        </div>
-    </template>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>User Platform</th>
+              <th>User Name</th>
+              <th>User Email</th>
+              <th>User Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(user, index) in filteredUsers" :key="index">
+              <td>{{ user.userPlatform }}</td>
+              <td>
+                <button class="btn" @click="copyText(decryptText(user.userName))">Copy</button>
+                {{ decryptText(user.userName) }}
+              </td>
+              <td>
+                <button class="btn" @click="copyText(decryptText(user.userEmail))">Copy</button>
+                {{ decryptText(user.userEmail) }}
+              </td>
+              <td>
+                <button class="btn" @click="copyText(decryptText(user.userPassword))">Copy</button>
+                {{ decryptText(user.userPassword) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
 
 <script>
 import selectAccounts from '../services/sqlLiteService.js';
-import EncryptDecryptHandler from '../services/decryptService.js';
-import { databaseStore } from '@/store/database'
+import AESCrypto from '../services/decryptService.js';
+import { databaseStore } from '@/store/database';
 
 export default {
   name: 'accountsView',
@@ -45,48 +52,32 @@ export default {
     return {
       searchTerm: '',
       users: [],
-      dbkey: null
     };
   },
   created() {
-    const store = databaseStore()
+    const store = databaseStore();
     const { dbBuffer } = store;
-
-
-    // Load accounts when component is created
-    selectAccounts(dbBuffer)
-      .then(jsonData => {
-        this.users = jsonData; 
+    try {
+      selectAccounts(dbBuffer).then(data => {
+       this.users = data
+      }).catch(err => {
+        console.error(err)
       })
-      .catch(err => {
-        console.error("Error selecting accounts:", err);
-        this.users = null;
-      });
+    } catch (error) {
+      console.error("Error selecting accounts:", error);
+      this.users = null;
+    }
   },
   computed: {
     filteredUsers() {
       if (!this.searchTerm) return this.users;
       const searchTermLowerCase = this.searchTerm.toLowerCase();
       return this.users.filter(user =>
-        user.userPlatform.toLowerCase().includes(searchTermLowerCase) ||
-        user.userName.toLowerCase().includes(searchTermLowerCase) ||
-        user.userEmail.toLowerCase().includes(searchTermLowerCase)
+        user.userPlatform.toLowerCase().includes(searchTermLowerCase)
       );
     }
   },
   methods: {
-    readableText(encryptedText){
-      const store = databaseStore()
-      const { dbKey } = store;
-      const handleDecrypt = new EncryptDecryptHandler();
-      return handleDecrypt.decrypt(encryptedText, dbKey);
-    },
-    search() {
-      // Implement search functionality
-    },
-    refresh() {
-      // Implement refresh functionality
-    },
     clearSearch() {
       this.searchTerm = '';
     },
@@ -97,6 +88,27 @@ export default {
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
+    },
+    decryptText(text){
+      try{
+      const store = databaseStore();
+      const { dbKey } = store;
+      const handleDecrypt = new AESCrypto(dbKey);
+      let decryptedText =  handleDecrypt.decrypt(text)
+      if (decryptedText === ''){
+        return "____"
+      }
+      return decryptedText
+      } catch(error){
+        return "ERROR DECRYPT"
+      }
+    },
+    goBacktoPage(){
+      const store = databaseStore();
+      store.clearData();
+      this.$router.push({
+        name: "mainPage"
+      })
     }
   }
 };

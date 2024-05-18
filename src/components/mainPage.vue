@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="dark-mode">
-    <!-- <h3>Account Keeper Viewer</h3> -->
+    <h3>Account Keeper Viewer</h3>
     <div class="container">
       <textarea :value="text" class="big-textfield" placeholder="Enter your AES Key here..."></textarea>
       <div class="button-container">
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import EncryptDecryptHandler from '../services/decryptService.js';
 import { databaseStore } from '@/store/database'
 
 export default {
@@ -51,9 +50,8 @@ export default {
         const uint8Array = new Uint8Array(arrayBuffer);
         const base64String = btoa(String.fromCharCode(...uint8Array));
         this.text = base64String;
-        const handlerKey = new EncryptDecryptHandler();
-        this.dbkey = handlerKey.convertStringToCryptoKey(base64String);
-        store.setDBKey(this.dbkey); // Save the dbKey to the store
+        this.dbkey = this.text
+        store.setDBKey(this.dbkey); // Save the dbKey to the store1
       };
       reader.readAsArrayBuffer(file);
     },

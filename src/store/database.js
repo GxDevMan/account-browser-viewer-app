@@ -11,6 +11,10 @@ export const databaseStore = defineStore('database', {
     },
     setDBKey(key) {
       this.dbKey = key;
+    },
+    clearData(){
+      this.dbBuffer = null
+      this.dbKey = null
     }
   }
 });
