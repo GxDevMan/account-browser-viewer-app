@@ -115,81 +115,86 @@ export default {
 </script>
 
   <style scoped>
-.table-container {
-  max-height: 400px; /* Adjust height as needed */
-  overflow-y: auto;
+.dark-mode {
+  background-color: #121212;
+  color: #fff;
 }
 
-.data-table th {
-  position: sticky;
-  top: 0;
+/* Container styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Search container styles */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
   background-color: #333;
-  color: #ffffff;
+  color: #fff;
 }
 
-  .dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Arial', sans-serif;
-  }
-  
+/* Button container styles */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Button styles */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #555;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Table container styles */
+.table-container {
+  overflow-x: auto;
+}
+
+/* Data table styles */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px;
+  border: 1px solid #555;
+}
+
+/* Media queries for responsiveness */
+@media only screen and (max-width: 768px) {
   .container {
-    width: 80%;
-    margin: auto;
-  }
-  
-  .search-container {
-    margin-bottom: 20px;
-  }
-  
-  .search-input {
-    width: 200px;
-    padding: 5px;
-    border: 1px solid #666;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-  
-  .button-container {
-    display: flex;
-  }
-  
-  .button-container .btn {
-    margin-right: 10px;
-  }
-  
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .data-table th,
-  .data-table td {
-    border: 1px solid #444;
-    padding: 8px;
-  }
-  
-  .data-table th {
-    background-color: #333;
-    color: #ffffff;
+    padding: 10px;
   }
   
   .btn {
-    background-color: #333;
-    color: #ffffff;
-    border: 1px solid #555;
-    border-radius: 5px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .search-input {
+    font-size: 14px;
   }
   
-  .btn:hover {
-    background-color: #555;
+  .btn {
+    padding: 8px 16px;
+    font-size: 12px;
   }
+}
   </style>
   

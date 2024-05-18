@@ -84,51 +84,69 @@ export default {
 </script>
 
 <style scoped>
-.dark-mode {
-  background-color: #121212;
-  color: #ffffff;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Arial', sans-serif;
+
+h3 {
+  color: #fff;
 }
 
 .container {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .big-textfield {
   width: 100%;
-  max-width: 600px;
-  height: 150px;
-  background-color: #1e1e1e;
-  color: #ffffff;
-  border: 1px solid #444;
-  border-radius: 5px;
-  padding: 10px;
+  min-height: 150px;
   margin-bottom: 20px;
-  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
 }
 
 .button-container {
   display: flex;
-  justify-content: center;
-  gap: 15px;
+  flex-direction: column;
 }
 
 .btn {
-  background-color: #333;
-  color: #ffffff;
-  border: 1px solid #555;
-  border-radius: 5px;
   padding: 10px 20px;
-  font-size: 16px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #555;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-  background-color: #555;
+.checkbox-input {
+  margin-left: 10px;
+}
+
+/* Dark mode styles */
+.dark-mode {
+  background-color: #121212;
+}
+
+/* Responsive design */
+@media only screen and (min-width: 768px) {
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .container {
+    max-width: 800px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
 }
 </style>
